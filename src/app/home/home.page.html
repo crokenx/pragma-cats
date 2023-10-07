@@ -1,20 +1,58 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Blank
+      Cat breeds and its level of intelligence
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-grid [fixed]="true">
+    <ion-row>
+      <ion-col *ngFor="let cat of cats$ | async; let i = index" size="12" size-md="6" size-lg="4">
+        <ion-card>
+          <img
+            class="cat_img" [alt]="cat.name" [src]="catImgUrl + cat.reference_image_id + '.jpg'"
+            (error)="brokenImg($event)"
+          />
+          <ion-card-header>
+            <ion-card-title>Breed: {{ cat.name }}</ion-card-title>
+            <ion-card-subtitle>Origin country: {{ cat.origin }}</ion-card-subtitle>
+          </ion-card-header>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+          <ion-card-content>
+            Intelligence level: {{ cat.intelligence }}
+            <ion-button [id]="'open-modal' + '-' + i" expand="block">Show more</ion-button>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-modal [trigger]="'open-modal' + '-' + i">
+          <ng-template>
+            <ion-card>
+              <img
+                class="cat_img" [alt]="cat.name" [src]="catImgUrl + cat.reference_image_id + '.jpg'"
+                (error)="brokenImg($event)"
+              />
+              <ion-card-header>
+                <ion-card-title>Breed: {{ cat.name }}</ion-card-title>
+                <ion-card-subtitle>Origin country: {{ cat.origin }}</ion-card-subtitle>
+              </ion-card-header>
+
+              <ion-card-content>
+                <div>Intelligence level: {{ cat.intelligence }}</div>
+                <div>Weight: {{ cat.weight.metric }} kg</div>
+                <div>Child friendly: {{ cat.child_friendly }}</div>
+                <div>Dog friendly: {{ cat.dog_friendly }}</div>
+                <div>Energy level: {{ cat.energy_level }}</div>
+                <div>Grooming: {{ cat.grooming }}</div>
+                <div>Health issues: {{ cat.health_issues }}</div>
+                <ion-button (click)="close()" expand="block" color="danger">Close</ion-button>
+              </ion-card-content>
+            </ion-card>
+          </ng-template>
+        </ion-modal>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
